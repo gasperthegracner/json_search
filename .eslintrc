@@ -1,0 +1,11 @@
+{
+    "ecmaFeatures": {
+        "jsx": true
+    },
+    "plugins": [
+        "jquery",
+        "react",
+        "es6"
+    ],
+    "rules": {}
+}
