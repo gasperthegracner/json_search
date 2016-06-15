@@ -4,7 +4,6 @@
 
 module.exports = function(grunt) {
 
-    var babel = require('rollup-plugin-babel');
 
     grunt.initConfig({
         /*Copy bower files to build/js/vendor */
@@ -18,7 +17,8 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'jquery/jquery.js': 'jquery/dist/jquery.js',
-                    'react/react.js': 'react/react.js'
+                    'react/react.js': 'react/react.js',
+                    'react-router/': 'react-router/'
                 }
             },
             prod: {
@@ -31,48 +31,34 @@ module.exports = function(grunt) {
                 }
             }
         },
-        /*transform from ES6*/
-        babel: {
-            options: {
-                sourceMap: true
-            },
-            dev: {
-                files: {
-                    'source/js/scripts.js': 'source/js/scripts.js'
-                }
-            },
-            prod: {
-                files: {
-                    'build/js/scripts.min.js': 'build/js/scripts.min.js'
-                }
-            }
-        },
         /*Prepare files for browser*/
         browserify: {
             dev: {
-                src: ['source/js/scripts.js'],
-                dest: 'source/js/scripts.js'
-                // Note: The entire `browserify-shim` config is inside `package.json`.
+                files: {
+                    'source/js/scripts.js': ['app/scripts/app.js']
+                },
+                options: {
+                    transform: [
+                        'babelify'
+                    ]
+                },
             },
             prod: {
-                src: ['build/js/scripts.min.js'],
-                dest: 'build/js/scripts.min.js'
-                // Note: The entire `browserify-shim` config is inside `package.json`.
+                files: {
+                    'build/js/scripts.min.js': ['app/scripts/app.js']
+                },
+                options: {
+                    transform: [
+                        'babelify'
+                    ]
+                },
             }
         },
         /*concat files*/
         concat: {
-            js_dev: {
-                src: ['app/scripts/**/**.js'],
-                dest: 'source/js/scripts.js',
-            },
             css_dev: {
                 src: ['app/styles/**/**.css'],
                 dest: 'source/css/main.css',
-            },
-            js_prod: {
-                src: ['app/scripts/**/**.js'],
-                dest: 'build/js/scripts.min.js',
             },
             css_prod: {
                 src: ['app/styles/**/**.css'],
@@ -118,6 +104,15 @@ module.exports = function(grunt) {
             dev: ["source/"],
             prod: ["build/"]
         },
+        watch: {
+            src: {
+                files: ['app/scripts/**/*.js', 'app/scripts/**/*.js', '!source/build/app.js'],
+                tasks: ['browserify:dev'],
+                options: {
+                    livereload: true
+                }
+            }
+        },
 
     });
 
@@ -125,6 +120,7 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-browserify');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-copy');
+    grunt.loadNpmTasks('grunt-contrib-watch');
 
     //minification
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
@@ -134,16 +130,14 @@ module.exports = function(grunt) {
     //cleaning
     grunt.loadNpmTasks('grunt-contrib-clean');
 
-    require("load-grunt-tasks")(grunt);
 
     var devel = [
         'clean:dev',
         'bowercopy:dev',
         'htmlmin:dev',
         'concat:css_dev',
-        'concat:js_dev',
-        'babel:dev',
-        'browserify:dev'
+        'browserify:dev',
+        'watch'
     ];
 
     var prod = [
@@ -151,8 +145,6 @@ module.exports = function(grunt) {
         'bowercopy:prod',
         'htmlmin:prod',
         'concat:css_prod',
-        'concat:js_prod',
-        'babel:prod',
         'browserify:prod',
         'uglify',
         'cssmin'

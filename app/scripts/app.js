@@ -1,27 +1,16 @@
-
 /**
  * Created by gaspergracner on 14/06/16.
  */
-/*
-var type = "grizly";
-while (true) {
-    var _type = 'polar';
-    console.log(_type);
-    break;
-}
-
-console.log(type);
-*/
 import React from "react";
 import ReactDOM from "react-dom";
+import {Router, Route, IndexRoute, hashHistory} from "react-router";
 
-class Layout extends  React.Component{
-    render(){
-        return(
-            <h1>Working</h1>
-        );
-    }
-}
+import Layout from "./components/Layout"
+
 
 const app = document.getElementById('app');
-ReactDOM.render(<Layout/>,app);
+ReactDOM.render(<Router history={hashHistory}>
+                    <Route path="/" component={Layout}>
+                    </Route>
+                </Router>
+    ,app);
