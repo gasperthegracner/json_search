@@ -13,12 +13,10 @@ module.exports = function(grunt) {
             },
             dev: {
                 options: {
-                    destPrefix: 'source/js/vendor'
+                    destPrefix: 'source'
                 },
                 files: {
-                    'jquery/jquery.js': 'jquery/dist/jquery.js',
-                    'react/react.js': 'react/react.js',
-                    'react-router/': 'react-router/'
+                    'js/vendor/jquery/jquery.js': 'jquery/dist/jquery.js',
                 }
             },
             prod: {
@@ -106,8 +104,8 @@ module.exports = function(grunt) {
         },
         watch: {
             src: {
-                files: ['app/scripts/**/*.js', 'app/scripts/**/*.js', '!source/build/app.js'],
-                tasks: ['browserify:dev'],
+                files: ['app/**/*.css', 'app/**/*.js', '!source/build/app.js'],
+                tasks: ['browserify:dev','concat:css_dev'],
                 options: {
                     livereload: true
                 }
@@ -133,7 +131,7 @@ module.exports = function(grunt) {
 
     var devel = [
         'clean:dev',
-        'bowercopy:dev',
+        //'bowercopy:dev',
         'htmlmin:dev',
         'concat:css_dev',
         'browserify:dev',
@@ -142,7 +140,7 @@ module.exports = function(grunt) {
 
     var prod = [
         'clean:prod',
-        'bowercopy:prod',
+        //'bowercopy:prod',
         'htmlmin:prod',
         'concat:css_prod',
         'browserify:prod',
