@@ -45,11 +45,15 @@ export default class Search extends  React.Component{
         });
 
         return(
-            <div>
-                <h1>Search</h1>
-                <input class="form-control" onChange={this.handleChange.bind(this)}/>
-                <button class="btn btn-success" onClick = {this.searchComments.bind(this)}>SEARCH!</button>
-                <ul>{CommentComponenents}</ul>
+            <div class="container">
+                <div class="jumbotron vertical-center">
+                    <div class="container">
+                        <h2>Search for comments</h2>
+                        <input class="form-control" onChange={this.handleChange.bind(this)}/>
+                    </div>
+                </div>
+
+                <div>{CommentComponenents}</div>
             </div>
         );
     }

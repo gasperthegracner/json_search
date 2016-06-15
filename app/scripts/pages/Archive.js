@@ -24,7 +24,7 @@ export default class Archive extends  React.Component{
         });
 
         return(
-            <div>
+            <div class="container">
                 <h1>Archive of comments</h1>
                 <ul>{CommentComponenents}</ul>
             </div>

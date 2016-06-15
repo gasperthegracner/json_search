@@ -13,11 +13,14 @@ export default class Comment extends  React.Component{
         const { postId, id, name, email, body } = this.props;
 
         return(
-            <li>
-                <h1>{name} - ({id})</h1>
-                <h4>{email}</h4>
-                <h2>{body}</h2>
-            </li>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h3>{name}</h3>
+                    <h6>[id: {id} post id: {postId}]</h6>
+                    <h5>{email}</h5>
+                    <h4>{body}</h4>
+                </div>
+            </div>
 
         );
     }

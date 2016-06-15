@@ -3541,11 +3541,18 @@ class CommentsStore extends EventEmitter{
 
         })
     }
+
     searchFor(text){
 
-        this.result=[];
-        var keys = ["postId","id","name","email","body"];
-        this.result = this.SearchItemInArrayObjects(this.comments,text,keys);
+        if(text=="")
+        {
+            this.result=this.comments;
+        }
+        else{
+            this.result=[];
+            var keys = ["postId","id","name","email","body"];
+            this.result = this.SearchItemInArrayObjects(this.comments,text,keys);
+        }
 
         this.emit("searchDone");
     }
