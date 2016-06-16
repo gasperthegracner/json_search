@@ -15,6 +15,7 @@ export default class Search extends  React.Component{
 
     constructor(){
         super();
+        this.getResult = this.getResult.bind(this);
         this.state={
             comments: CommentsStore.getAll(),
         };
@@ -27,15 +28,20 @@ export default class Search extends  React.Component{
     }
 
     componentWillMount(){
-        CommentsStore.on("searchDone",()=>{
-            this.setState({
-                comments:CommentsStore.getResult()
-            });
-        })
+        CommentsStore.on("searchDone",this.getResult);
+    }
+    componentWillUnmount(){
+        CommentsStore.removeListener("searchDone",this.getResult);
     }
     handleChange(e){
         const value = e.target.value;
         this.searchComments(value);
+    }
+
+    getResult(){
+        this.setState({
+            comments:CommentsStore.getResult()
+        });
     }
 
     render(){
@@ -48,8 +54,7 @@ export default class Search extends  React.Component{
             <div class="container">
                 <div class="jumbotron vertical-center">
                     <div class="container">
-                        <h2>Search for comments</h2>
-                        <input class="form-control" onChange={this.handleChange.bind(this)}/>
+                        <input id="search-input" class="form-control input-lg" placeholder="Search comments" onChange={this.handleChange.bind(this)}/>
                     </div>
                 </div>
 
