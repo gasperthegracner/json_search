@@ -6,6 +6,24 @@ module.exports = function(grunt) {
 
 
     grunt.initConfig({
+        env : {
+            dev: {
+                NODE_ENV : 'DEVELOPMENT'
+            },
+            prod : {
+                NODE_ENV : 'PRODUCTION'
+            }
+        },
+        preprocess : {
+            dev : {
+                src : './app/index.html',
+                dest : './source/index.html'
+            },
+            prod : {
+                src : './app/index.html',
+                dest : './build/index.html'
+            }
+        },
         /*Copy bower files to build/js/vendor */
         bowercopy: {
             options: {
@@ -17,15 +35,16 @@ module.exports = function(grunt) {
                 },
                 files: {
                     'js/vendor/jquery/jquery.js': 'jquery/dist/jquery.js',
+                    'css/bootstrap/bootstrap.min.css': 'bootstrap/dist/css/bootstrap.min.css'
                 }
             },
             prod: {
                 options: {
-                    destPrefix: 'build/js/vendor'
+                    destPrefix: 'build'
                 },
                 files: {
-                    'jquery/jquery.js': 'jquery/dist/jquery.js',
-                    'react/react.js': 'react/react.js'
+                    'js/vendor/jquery/jquery.js': 'jquery/dist/jquery.js',
+                    'css/bootstrap/bootstrap.min.css': 'bootstrap/dist/css/bootstrap.min.css'
                 }
             }
         },
@@ -71,12 +90,12 @@ module.exports = function(grunt) {
                     collapseWhitespace: true
                 },
                 files: {
-                    'build/index.html': 'app/index.html'
+                    'build/index.html': 'build/index.html'
                 }
             },
             dev: {
                 files: {
-                    'source/index.html': 'app/index.html',
+                    'source/index.html': 'source/index.html',
                 }
             }
         },
@@ -120,6 +139,9 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-copy');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
+    grunt.loadNpmTasks('grunt-preprocess');
+    grunt.loadNpmTasks('grunt-env');
+
     //minification
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
     grunt.loadNpmTasks('grunt-contrib-uglify');
@@ -130,8 +152,10 @@ module.exports = function(grunt) {
 
 
     var devel = [
+        'env:dev',
         'clean:dev',
-        //'bowercopy:dev',
+        'preprocess:dev',
+        'bowercopy:dev',
         'htmlmin:dev',
         'concat:css_dev',
         'browserify:dev',
@@ -139,8 +163,10 @@ module.exports = function(grunt) {
     ];
 
     var prod = [
+        'env:prod',
         'clean:prod',
-        //'bowercopy:prod',
+        'bowercopy:prod',
+        'preprocess:prod',
         'htmlmin:prod',
         'concat:css_prod',
         'browserify:prod',
@@ -150,7 +176,7 @@ module.exports = function(grunt) {
 
 
 
-    grunt.registerTask('default',devel );
-    grunt.registerTask('prod',prod );
+    grunt.registerTask('devel',devel );
+    grunt.registerTask('default',prod );
 
 };

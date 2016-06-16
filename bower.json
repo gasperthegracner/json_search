@@ -12,10 +12,9 @@
     "tests"
   ],
   "dependencies": {
-    "jquery": "^3.0.0"
+    "jquery": "^3.0.0",
+    "bootstrap": "^3.3.6"
   },
   "devDependencies": {
-    "react-router": "^2.4.1",
-    "bootstrap": "^3.3.6"
   }
 }
